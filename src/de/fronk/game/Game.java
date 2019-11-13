@@ -2,7 +2,6 @@ package de.fronk.game;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.util.Random;
 
 public class Game extends Canvas implements Runnable {
 
@@ -12,12 +11,10 @@ public class Game extends Canvas implements Runnable {
     private Handler handler;
 
     public Game() {
-        new Window(WIDTH, HEIGHT, "Java Game Project", this);
         handler = new Handler();
-        Random random = new Random();
-        for (int i = 0; i < 50; i++) {
-            handler.add(new Player(random.nextInt(WIDTH), random.nextInt(HEIGHT), ID.Player));
-        }
+        this.addKeyListener(new KeyInput(handler));
+        new Window(WIDTH, HEIGHT, "Java Game Project", this);
+        handler.add(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player));
     }
 
     public static void main(String[] args) {
@@ -62,7 +59,7 @@ public class Game extends Canvas implements Runnable {
 
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
-                System.out.println("FPS: " + frames);
+                //iSystem.out.println("FPS: " + frames);
                 frames = 0;
             }
         }
