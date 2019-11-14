@@ -5,16 +5,19 @@ import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable {
 
-    public static final int WIDTH = 640, HEIGHT = WIDTH / 12 * 9;
+    public static final int WIDTH = 800, HEIGHT = WIDTH / 12 * 9;
     private Thread thread;
     private boolean runnig = false;
     private Handler handler;
+    private HUD hud;
 
     public Game() {
         handler = new Handler();
         this.addKeyListener(new KeyInput(handler));
         new Window(WIDTH, HEIGHT, "Java Game Project", this);
+        hud = new HUD();
         handler.add(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player));
+        handler.add(new BasicEnemy(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.BasicEnemy));
     }
 
     public static void main(String[] args) {
@@ -36,6 +39,12 @@ public class Game extends Canvas implements Runnable {
         }
     }
 
+    public static int clamp(int value, int min, int max) {
+        if (value <= min) return min;
+        else if (value >= max) return max;
+        else return value;
+    }
+
     @Override
     public void run() {
         long lastTime = System.nanoTime();
@@ -46,6 +55,7 @@ public class Game extends Canvas implements Runnable {
         int frames = 0;
 
         while (runnig) {
+            this.requestFocus();
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
@@ -73,11 +83,13 @@ public class Game extends Canvas implements Runnable {
             return;
         }
         Graphics graphics = bufferStrategy.getDrawGraphics();
-
+        //background
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, WIDTH, HEIGHT);
-
+        //renders all game objects
         handler.render(graphics);
+        //render HUD
+        hud.render(graphics);
 
         graphics.dispose();
         bufferStrategy.show();
@@ -85,6 +97,6 @@ public class Game extends Canvas implements Runnable {
 
     private void tick() {
         handler.tick();
+        hud.tick();
     }
-
 }
