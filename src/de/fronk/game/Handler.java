@@ -1,10 +1,11 @@
 package de.fronk.game;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Handler {
-    LinkedList<GameObject> objects = new LinkedList<>();
+    //CopyOnWriteArrayList wegen Treads? gibt Runtime Error beim foreach Loop sonst, evtl auf for loop ändern?
+    CopyOnWriteArrayList<GameObject> objects = new CopyOnWriteArrayList<>();
 
     public void tick() {
         for (GameObject object : objects) {

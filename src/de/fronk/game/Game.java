@@ -16,8 +16,8 @@ public class Game extends Canvas implements Runnable {
         this.addKeyListener(new KeyInput(handler));
         new Window(WIDTH, HEIGHT, "Java Game Project", this);
         hud = new HUD();
-        handler.add(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player));
-        handler.add(new BasicEnemy(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.BasicEnemy));
+        handler.add(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler));
+        handler.add(new BasicEnemy(100, 100, ID.BasicEnemy, handler));
     }
 
     public static void main(String[] args) {
